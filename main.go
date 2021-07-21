@@ -26,6 +26,7 @@ func (u LinuxMemoryPlugin) GraphDefinition() map[string]mp.Graphs {
 			Unit:  mp.UnitBytes,
 			Metrics: []mp.Metrics{
 				{Name: "total", Label: "Total", Stacked: false},
+				{Name: "available", Label: "Available", Stacked: false},
 				{Name: "used", Label: "Used", Stacked: false},
 				{Name: "kernelstack", Label: "KernelStack", Stacked: true},
 				{Name: "vmallocused", Label: "VmallocUsed", Stacked: true},
@@ -35,6 +36,7 @@ func (u LinuxMemoryPlugin) GraphDefinition() map[string]mp.Graphs {
 				{Name: "slab", Label: "Slab", Stacked: true},
 				{Name: "buffers", Label: "Buffers", Stacked: true},
 				{Name: "cached", Label: "Cached", Stacked: true},
+				{Name: "free", Label: "Free", Stacked: true},
 			},
 		},
 	}
@@ -57,6 +59,7 @@ func (u LinuxMemoryPlugin) FetchMetrics() (map[string]float64, error) {
 	return map[string]float64{
 		"total":       float64(*m.MemTotal * 1024),
 		"used":        float64((*m.MemTotal - *m.MemAvailable) * 1024),
+		"available":   float64(*m.MemAvailable * 1024),
 		"kernelstack": float64(*m.KernelStack * 1024),
 		"vmallocused": float64(*m.VmallocUsed * 1024),
 		"pagetables":  float64(*m.PageTables * 1024),
@@ -65,6 +68,7 @@ func (u LinuxMemoryPlugin) FetchMetrics() (map[string]float64, error) {
 		"slab":        float64(*m.Slab * 1024),
 		"buffers":     float64(*m.Buffers * 1024),
 		"cached":      float64(*m.Cached * 1024),
+		"free":        float64(*m.MemFree * 1024),
 	}, nil
 }
 
