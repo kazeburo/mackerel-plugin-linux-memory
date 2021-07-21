@@ -25,9 +25,9 @@ func (u LinuxMemoryPlugin) GraphDefinition() map[string]mp.Graphs {
 			Label: "Linux Memory",
 			Unit:  mp.UnitBytes,
 			Metrics: []mp.Metrics{
-				{Name: "buffers", Label: "Buffers"},
-				{Name: "cached", Label: "Cached"},
-				{Name: "slab", Label: "Slab"},
+				{Name: "buffers", Label: "Buffers", Stacked: true},
+				{Name: "cached", Label: "Cached", Stacked: true},
+				{Name: "slab", Label: "Slab", Stacked: true},
 			},
 		},
 	}
