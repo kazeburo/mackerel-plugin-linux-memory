@@ -25,6 +25,8 @@ func (u LinuxMemoryPlugin) GraphDefinition() map[string]mp.Graphs {
 			Label: "Linux Memory",
 			Unit:  mp.UnitBytes,
 			Metrics: []mp.Metrics{
+				{Name: "total", Label: "Total", Stacked: false},
+				{Name: "used", Label: "Used", Stacked: false},
 				{Name: "buffers", Label: "Buffers", Stacked: true},
 				{Name: "cached", Label: "Cached", Stacked: true},
 				{Name: "slab", Label: "Slab", Stacked: true},
@@ -48,9 +50,11 @@ func (u LinuxMemoryPlugin) FetchMetrics() (map[string]float64, error) {
 	}
 
 	return map[string]float64{
-		"buffers": float64(*m.Buffers),
-		"cached":  float64(*m.Cached),
-		"slab":    float64(*m.Slab),
+		"total":   float64(*m.MemTotal * 1024),
+		"used":    float64((*m.MemTotal - *m.MemAvailable) * 1024),
+		"buffers": float64(*m.Buffers * 1024),
+		"cached":  float64(*m.Cached * 1024),
+		"slab":    float64(*m.Slab * 1024),
 	}, nil
 }
 
